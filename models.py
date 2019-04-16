@@ -7,7 +7,7 @@ import math
 
 def logreg(X_train, X_test, Y_train, Y_test, x_final):
     # Linear Regression
-    regr = LogisticRegression(solver="lbfgs", multi_class="auto", max_iter=200)
+    regr = LogisticRegression(solver="lbfgs", max_iter=200)
     regr.fit(X_train, Y_train.values.ravel())
     Y_pred = regr.predict(X_test)
     y_final = regr.predict(x_final)
@@ -23,7 +23,7 @@ def tree_classifier(X_train, X_test, Y_train, Y_test, x_final):
 
 def svm(X_train, X_test, Y_train, Y_test, x_final):
     # Support Vector Machines
-    SVM = SVC(kernel='rbf', gamma="scale")
+    SVM = SVC(kernel='rbf')
     SVM.fit(X_train, Y_train.values.ravel())
     Y_pred = SVM.predict(X_test)
     y_final = SVM.predict(x_final)

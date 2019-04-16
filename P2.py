@@ -14,6 +14,8 @@ def prepare(df):
         print("There are Null values")
         df.dropna()
 
+    df = df.astype('float64')
+
 def read_data(name):
     print("-----------Runnning " + name + "-----------")
     # Cleaning the data, removing nulls if any, and converting all
@@ -39,14 +41,14 @@ def read_data(name):
     print("All Features")
     split(x_df, y_df, x_to_classify, name, True)
 
-def split(X, Y, x_to_classify, name, plot):
+def split(X, Y, x_to_classify, name, call_plot):
 
     # 70/30 split for training and testing data,
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=42,
                                                         test_size=0.3, stratify=Y)
 
     # Visualise the Training Data
-    if plot:
+    if call_plot:
         plot(X_train, Y_train, name)
     models(X_train, X_test, Y_train, Y_test, x_to_classify, name)
 
