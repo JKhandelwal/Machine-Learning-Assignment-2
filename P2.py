@@ -36,10 +36,10 @@ def read_data(name):
     x_to_classify_new = model.transform(x_to_classify)
 
     print("Some Features Selected")
-    split(x_new, y_df, x_to_classify_new, name, False)
+    split(x_new, y_df, x_to_classify_new, "subset_" + name , False)
 
     print("All Features")
-    split(x_df, y_df, x_to_classify, name, True)
+    split(x_df, y_df, x_to_classify, "all_" + name, True)
 
 def split(X, Y, x_to_classify, name, call_plot):
 
