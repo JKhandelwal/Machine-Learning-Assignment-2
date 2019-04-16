@@ -1,77 +1,89 @@
 import pandas as pd
 from sklearn.model_selection import train_test_split
-from sklearn.model_selection import StratifiedShuffleSplit
-from sklearn.metrics import mean_squared_error, r2_score, mean_absolute_error
 from plot import *
 from utils import *
 from models import *
 from statistics import mean
 import numpy as np
 import argparse
+from sklearn.ensemble import ExtraTreesClassifier
+from sklearn.feature_selection import SelectFromModel
 
 def prepare(df):
-    df.dropna()
     if df.isnull().values.any():
         print("There are Null values")
         df.dropna()
-    # Convert to Float 64 as to not have to convert implicitly for scaling
-    df = df.astype('float64')
 
-def read_data():
+def read_data(name):
+    print("-----------Runnning " + name + "-----------")
     # Cleaning the data, removing nulls if any, and converting all
     # values to floats for easy scalar transforms
-    x_df = pd.read_csv("binary/X.csv")
-    y_df = pd.read_csv("binary/y.csv")
+    x_df = pd.read_csv(name + '/X.csv', header=None)
+    y_df = pd.read_csv(name + '/y.csv', header=None)
     x_df.columns = ["X" + str(x) for x in range(1,len(x_df.columns) + 1)]
     y_df.columns = ["Y"]
-    x_to_classify = pd.read_csv("binary/xToClassify.csv")
+    x_to_classify = pd.read_csv(name + '/XToClassify.csv', header=None)
     prepare(x_df)
     prepare(y_df)
     prepare(x_to_classify)
 
-    split(x_df, y_df, x_to_classify)
+    clf = ExtraTreesClassifier(n_estimators=50)
+    clf = clf.fit(x_df, y_df.values.ravel())
+    model = SelectFromModel(clf, prefit=True)
+    x_new = model.transform(x_df)
+    x_to_classify_new = model.transform(x_to_classify)
 
-def split(X, Y, x_final):
+    print("Some Features Selected")
+    split(x_new, y_df, x_to_classify_new, name, False)
 
-    # 60/40 split for training and testing data,
-    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=42, test_size=0.3, stratify=Y)
-    # sss = StratifiedShuffleSplit(n_splits=1, test_size=0.3, random_state=42)
-    # for train_index, test_index in sss.split(X, Y):
-    #     X_train, X_test = X[train_index], X[test_index]
-    #     Y_train, Y_test = Y[train_index], Y[test_index]
+    print("All Features")
+    split(x_df, y_df, x_to_classify, name, True)
+
+def split(X, Y, x_to_classify, name, plot):
+
+    # 70/30 split for training and testing data,
+    X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=42,
+                                                        test_size=0.3, stratify=Y)
 
     # Visualise the Training Data
-    plot(X_train, Y_train)
-    # Scale the Data by sclaing and polynomial fitting
-    X_train, X_test = scale(X_train, X_test)
-    print("NON PCA")
-    models(X_train, X_test, Y_train, Y_test, x_final)
+    if plot:
+        plot(X_train, Y_train, name)
+    models(X_train, X_test, Y_train, Y_test, x_to_classify, name)
 
-    X_train, X_test = PCA_scaled(X_train, X_test)
-    print("PCA")
-    # models(X_train, X_test, Y_train, Y_test, x_final)
-
-def models(X_train, X_test, Y_train, Y_test, x_final):
-    # Run the Three algorithms and print the result.
-
+def models(X_train, X_test, Y_train, Y_test, x_final, name):
+    # Run the algorithms and print the result.
+    y = []
+    y_names = []
     Y_pred, y_final = logreg(X_train, X_test, Y_train, Y_test, x_final)
-    print_stats("Logistic Regression", Y_pred, Y_test, y_final, "binary")
+    print_stats("Logistic Regression", Y_pred, Y_test, y_final, name)
+    y.append(y_final)
+    y_names.append("Logistic Regression")
 
     Y_pred, y_final = tree_classifier(X_train, X_test, Y_train, Y_test, x_final)
-    print_stats("Tree", Y_pred, Y_test, y_final, "binary")
+    print_stats("Decision Tree", Y_pred, Y_test, y_final, name)
+    y.append(y_final)
+    y_names.append("Decision Tree")
 
     Y_pred, y_final = tree_classifier(X_train, X_test, Y_train, Y_test, x_final)
-    print_stats("Random Forests", Y_pred, Y_test, y_final, "binary")
+    print_stats("Random Forests", Y_pred, Y_test, y_final, name)
+    y.append(y_final)
+    y_names.append("Random Forests")
 
     Y_pred, y_final = svm(X_train, X_test, Y_train, Y_test, x_final)
-    print_stats("SVM", Y_pred, Y_test, y_final, "binary")
+    print_stats("SVM", Y_pred, Y_test, y_final, name)
+    y.append(y_final)
+    y_names.append("SVM")
+
+    write(name, y, y_names)
 
 
-def plot(X, Y):
+def plot(X, Y, name):
     # Run all of the plots
     df = pd.concat([X,Y], axis=1)
-    plotStdDev(df)
-    plot_spearman(df)
+    plotStdDev(df, name)
+    plot_spearman(df, name)
+    plot_fill_between(df, name)
+    plot_parallel_coordinates(df, name)
 
 
 if __name__ == "__main__":
@@ -84,4 +96,5 @@ if __name__ == "__main__":
     else:
         iteration = False
         print("Normal usage")
-    read_data()
+    read_data("binary")
+    read_data("multiclass")
