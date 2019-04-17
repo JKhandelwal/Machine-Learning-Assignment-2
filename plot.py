@@ -107,37 +107,22 @@ def plot_spearman(df, name):
     plot_spear(spe, X_values, name)
     plot_p_value(spe, X_values, name)
 
-def plot_100(mse, r, iterations):
-    x = range(1,iterations+1)
-    lin_mse = mse['lin']
-    ridge_mse = mse['ridge']
-    lasso_mse = mse['lasso']
+def plot_100(accuracy, iterations, name):
+    x = range(1, iterations+1)
+    logreg_accuracy = accuracy['logreg']
+    rf_accuracy = accuracy['rf']
+    svm_accuracy = accuracy['svm']
+    tree_accuracy = accuracy['tree']
 
     fig = plt.figure()
     ax1 = fig.add_subplot(111)
 
-    ax1.scatter(x, lin_mse, c='b', marker="s", label='Linear Regression')
-    ax1.scatter(x, ridge_mse, c='r', marker="o", label='Ridge Regression')
-    ax1.scatter(x, lasso_mse, c='g', marker="+", label='Lasso Regression')
+    ax1.scatter(x, logreg_accuracy, c='y', marker="+", label='Logistic Regression')
+    ax1.scatter(x, rf_accuracy, c='b', marker="+", label='Random Forests')
+    ax1.scatter(x, svm_accuracy, c='r', marker="+", label='Support Vector Machines')
+    ax1.scatter(x, tree_accuracy, c='g', marker="+", label='Decision Tree')
     plt.legend();
     plt.xlabel("Iteration Number")
-    plt.ylabel("MSE Value")
-    plt.savefig("plots/MSEComparison.png")
-    plt.close()
-
-    lin_r =  r['lin']
-    ridge_r = r['ridge']
-    lasso_r = r['lasso']
-
-    fig = plt.figure()
-    ax1 = fig.add_subplot(111)
-
-    ax1.scatter(x, lin_r, c='b', label='Linear Regression')
-    ax1.scatter(x, ridge_r, c='r', label='Ridge Regression')
-    ax1.scatter(x, lasso_r, c='g', label='Lasso Regression')
-    plt.legend();
-    plt.title("R Squared Comparisons")
-    plt.xlabel("Iteration Number")
-    plt.ylabel("R^2 Value")
-    plt.savefig("plots/R2Comparison.png")
+    plt.ylabel("Accuracy Value")
+    plt.savefig("plots/AccuracyComparison" + name + ".png")
     plt.close()
