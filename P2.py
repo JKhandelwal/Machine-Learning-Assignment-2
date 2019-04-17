@@ -8,6 +8,8 @@ import numpy as np
 import argparse
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_selection import SelectFromModel
+import json
+import ast
 
 def prepare(df):
     if df.isnull().values.any():
@@ -25,6 +27,9 @@ def read_data(name):
     x_df.columns = ["X" + str(x) for x in range(1,len(x_df.columns) + 1)]
     y_df.columns = ["Y"]
     x_to_classify = pd.read_csv(name + '/XToClassify.csv', header=None)
+    with open (name + "/key.txt") as f:
+        str_key = f.read()
+        key = ast.literal_eval(str_key)
     prepare(x_df)
     prepare(y_df)
     prepare(x_to_classify)
@@ -36,12 +41,12 @@ def read_data(name):
     x_to_classify_new = model.transform(x_to_classify)
 
     print("Some Features Selected")
-    split(x_new, y_df, x_to_classify_new, "subset_" + name , False)
+    split(x_new, y_df, x_to_classify_new, "subset_" + name , False, key)
 
     print("All Features")
-    split(x_df, y_df, x_to_classify, "all_" + name, True)
+    split(x_df, y_df, x_to_classify, "all_" + name, True, key)
 
-def split(X, Y, x_to_classify, name, call_plot):
+def split(X, Y, x_to_classify, name, call_plot, key):
 
     # 70/30 split for training and testing data,
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=42,
@@ -49,7 +54,7 @@ def split(X, Y, x_to_classify, name, call_plot):
 
     # Visualise the Training Data
     if call_plot:
-        plot(X_train, Y_train, name)
+        plot(X_train, Y_train, name, key)
     models(X_train, X_test, Y_train, Y_test, x_to_classify, name)
 
 def models(X_train, X_test, Y_train, Y_test, x_final, name):
@@ -79,12 +84,12 @@ def models(X_train, X_test, Y_train, Y_test, x_final, name):
     write(name, y, y_names)
 
 
-def plot(X, Y, name):
+def plot(X, Y, name, key):
     # Run all of the plots
     df = pd.concat([X,Y], axis=1)
-    plotStdDev(df, name)
+    plotStdDev(df, name, key)
     plot_spearman(df, name)
-    plot_fill_between(df, name)
+    plot_fill_between(df, name, key)
     plot_parallel_coordinates(df, name)
 
 

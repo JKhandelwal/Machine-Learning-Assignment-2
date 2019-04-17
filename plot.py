@@ -4,7 +4,7 @@ import scipy.stats as st
 import numpy as np
 import pandas as pd
 
-def plotStdDev(X, name):
+def plotStdDev(X, name, key):
     list_unique = X.Y.unique()
 
     for i in list_unique:
@@ -27,7 +27,9 @@ def plotStdDev(X, name):
         elif i == 4:
             c = 'm'
 
-        plt.errorbar(range(1,769), y, err, linestyle='None', color=c,markerfacecolor=c,  marker='+', capsize=4, label=("Y=" + str(i)))
+        key_val = key[i]
+
+        plt.errorbar(range(1,769), y, err, linestyle='None', color=c,markerfacecolor=c,  marker='+', capsize=4, label=("Y=" + key_val))
     plt.legend(loc='upper left')
     plt.xlabel("X Feature Number")#
     plt.ylabel("Mean with Standard Deviation")
@@ -35,7 +37,7 @@ def plotStdDev(X, name):
     plt.savefig("plots/stdDev" + str(name) + ".png")
     plt.close()
 
-def plot_fill_between(X, name):
+def plot_fill_between(X, name, key):
     list_unique = X.Y.unique()
 
     for i in list_unique:
@@ -58,7 +60,7 @@ def plot_fill_between(X, name):
         elif i == 4:
             c = 'm'
 
-        plt.fill_between(range(1,769), [x + y for x, y in zip(y, err)], [x - y for x, y in zip(y, err)], color=c, label=("Y=" + str(i)))
+        plt.fill_between(range(1,769), [x + y for x, y in zip(y, err)], [x - y for x, y in zip(y, err)], color=c, label=("Y=" + str(key[i])))
 
     plt.legend(loc='upper left')
     plt.xlabel("X Feature Number")#
@@ -73,7 +75,7 @@ def plot_parallel_coordinates(df, name):
 
     plt.xlabel("Feature Number")
     plt.ylabel("Sample Number")
-    plt.title("Samples through features for Y=0 and Y=1 for " + name)
+    plt.title("Samples through features for Y for " + name)
     plt.savefig("plots/parallel" + str(name) + ".png")
     plt.close()
 
