@@ -32,7 +32,7 @@ def svm(X_train, X_test, Y_train, Y_test, x_final):
 
 def rf(X_train, X_test, Y_train, Y_test, x_final):
     # Random Forests
-    rf = RandomForestClassifier()
+    rf = RandomForestClassifier(n_estimators=10)
     rf.fit(X_train, Y_train.values.ravel())
     Y_pred = rf.predict(X_test)
     y_final = rf.predict(x_final)

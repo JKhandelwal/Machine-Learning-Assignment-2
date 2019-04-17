@@ -49,8 +49,8 @@ def read_data(name):
 def split(X, Y, x_to_classify, name, call_plot, key):
 
     if iteration:
-        perform_iteration(X, Y, 100, name)
-
+        perform_iteration(X, Y, 100, x_to_classify, name)
+        return
 
     # 70/30 split for training and testing data,
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=42,
@@ -98,7 +98,7 @@ def plot(X, Y, name, key):
     plot_parallel_coordinates(df, name)
 
 
-def perform_iteration(X, Y, iteration, name):
+def perform_iteration(X, Y, iterations, x_final, name):
         # For 100 Iterations
         accuracy = {}
         accuracy['logreg'] = []
