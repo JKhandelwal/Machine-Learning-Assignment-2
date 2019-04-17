@@ -124,13 +124,13 @@ def perform_iteration(X, Y, iterations, x_final, name):
 
         print("Logistic Regression Accuracy Score Standard deviation: " + str(np.std(accuracy['logreg'])))
         print("Random Forests Accuracy Score Standard deviation: " + str(np.std(accuracy['rf'])))
-        print("Support Vector Accuracy Score Standard deviation: " + str(np.std(accuracy['svm'])))
+        print("Support Vector Machines Accuracy Score Standard deviation: " + str(np.std(accuracy['svm'])))
         print("Decision Tree Accuracy Score Standard deviation: " + str(np.std(accuracy['tree'])))
 
-        print("Logistic Regression MSE Mean: " + str(mean(accuracy['logreg'])))
-        print("Random Forests MSE Mean: " + str(mean(accuracy['rf'])))
-        print("Support Vector MSE Mean: " + str(mean(accuracy['svm'])))
-        print("Decision Tree MSE Mean: " + str(mean(accuracy['tree'])))
+        print("Logistic Regression Accuracy Mean: " + str(mean(accuracy['logreg'])))
+        print("Random Forests Accuracy Mean: " + str(mean(accuracy['rf'])))
+        print("Support Vector Machines Accuracy Mean: " + str(mean(accuracy['svm'])))
+        print("Decision Tree Accuracy Mean: " + str(mean(accuracy['tree'])))
 
 
 if __name__ == "__main__":
