@@ -124,5 +124,6 @@ def plot_100(accuracy, iterations, name):
     plt.legend();
     plt.xlabel("Iteration Number")
     plt.ylabel("Accuracy Value")
+    plt.title("Accuracy across iterations for " + name)
     plt.savefig("plots/AccuracyComparison" + name + ".png")
     plt.close()
