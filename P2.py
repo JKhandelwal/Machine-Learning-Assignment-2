@@ -101,24 +101,24 @@ def plot(X, Y, name, key):
 def perform_iteration(X,Y, name):
         # For 100 Iterations
         accuracy = {}
-        mse['logreg'] = []
-        mse['rf'] = []
-        mse['svm'] = []
-        mse['tree'] = []
+        accuracy['logreg'] = []
+        accuracy['rf'] = []
+        accuracy['svm'] = []
+        accuracy['tree'] = []
         for i in range(0, iterations):
             X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=i)
 
             Y_pred, y_final = logreg(X_train, X_test, Y_train, Y_test, x_final)
-            mse['logreg'].append(accuracy_score(Y_test, Y_pred))
+            accuracy['logreg'].append(accuracy_score(Y_test, Y_pred))
 
             Y_pred, y_final = tree_classifier(X_train, X_test, Y_train, Y_test, x_final)
-            mse['tree'].append(accuracy_score(Y_test, Y_pred))
+            accuracy['tree'].append(accuracy_score(Y_test, Y_pred))
 
             Y_pred, y_final = rf(X_train, X_test, Y_train, Y_test, x_final)
-            mse['rf'].append(accuracy_score(Y_test, Y_pred))
+            accuracy['rf'].append(accuracy_score(Y_test, Y_pred))
 
             Y_pred, y_final = svm(X_train, X_test, Y_train, Y_test, x_final)
-            mse['svm'].append(accuracy_score(Y_test, Y_pred))
+            accuracy['svm'].append(accuracy_score(Y_test, Y_pred))
 
         plot_100(accuracy, iterations, name)
 
