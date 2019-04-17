@@ -48,9 +48,14 @@ def read_data(name):
 
 def split(X, Y, x_to_classify, name, call_plot, key):
 
+    if iteration:
+        perform_iteration(X,Y)
+
+
     # 70/30 split for training and testing data,
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=42,
                                                         test_size=0.3, stratify=Y)
+
 
     # Visualise the Training Data
     if call_plot:
@@ -71,7 +76,7 @@ def models(X_train, X_test, Y_train, Y_test, x_final, name):
     y.append(y_final)
     y_names.append("Decision Tree")
 
-    Y_pred, y_final = tree_classifier(X_train, X_test, Y_train, Y_test, x_final)
+    Y_pred, y_final = rf(X_train, X_test, Y_train, Y_test, x_final)
     print_stats("Random Forests", Y_pred, Y_test, y_final, name)
     y.append(y_final)
     y_names.append("Random Forests")
@@ -91,6 +96,41 @@ def plot(X, Y, name, key):
     plot_spearman(df, name)
     plot_fill_between(df, name, key)
     plot_parallel_coordinates(df, name)
+
+
+def plot_iteration(X,Y):
+    def iterations(X, Y, iterations):
+        # For 100 Iterations
+        accuracy = {}
+        mse['logreg'] = []
+        mse['rf'] = []
+        mse['svm'] = []
+        mse['tree'] = []
+        for i in range(0, iterations):
+            X_train, X_test, Y_train, Y_test = train_test_split(X, Y, test_size=0.3, random_state=i)
+
+
+            Y_pred, y_final = logreg(X_train, X_test, Y_train, Y_test, x_final)
+            mse['logreg'].append(accuracy_score(Y_test, Y_pred))
+
+            Y_pred, y_final = tree_classifier(X_train, X_test, Y_train, Y_test, x_final)
+            mse['tree'].append(accuracy_score(Y_test, Y_pred))
+
+            Y_pred, y_final = tree_classifier(X_train, X_test, Y_train, Y_test, x_final)
+            mse['logreg'].append(accuracy_score(Y_test, Y_pred))
+
+            Y_pred, y_final = svm(X_train, X_test, Y_train, Y_test, x_final)
+
+
+        plot_100(accuracy, iterations)
+
+        print("Linear Regression MSE Standard deviation: " + str(np.std(mse['lin'])))
+        print("Ridge Regression MSE Standard deviation: " + str(np.std(mse['ridge'])))
+        print("Lasso Regression MSE Standard deviation: " + str(np.std(mse['lasso'])))
+
+        print("Linear Regression MSE Mean: " + str(mean(mse['lin'])))
+        print("Ridge Regression MSE Mean: " + str(mean(mse['ridge'])))
+        print("Lasso Regression MSE Mean: " + str(mean(mse['lasso'])))
 
 
 if __name__ == "__main__":
