@@ -59,29 +59,29 @@ def split(X, Y, x_to_classify, name, call_plot, key):
     # Visualise the Training Data On all features, not on some features
     if call_plot:
         plot(X_train, Y_train, name, key)
-    models(X_train, X_test, Y_train, Y_test, x_to_classify, name)
+    models(X_train, X_test, Y_train, Y_test, x_to_classify, name, key)
 
-def models(X_train, X_test, Y_train, Y_test, x_final, name):
+def models(X_train, X_test, Y_train, Y_test, x_final, name, key):
     # Run the algorithms and print the result.
     y = []
     y_names = []
     Y_pred, y_final = logreg(X_train, X_test, Y_train, Y_test, x_final)
-    print_stats("Logistic Regression", Y_pred, Y_test, y_final, name)
+    print_stats("Logistic Regression", Y_pred, Y_test, y_final, name, key)
     y.append(y_final)
     y_names.append("Logistic Regression")
 
     Y_pred, y_final = tree_classifier(X_train, X_test, Y_train, Y_test, x_final)
-    print_stats("Decision Tree", Y_pred, Y_test, y_final, name)
+    print_stats("Decision Tree", Y_pred, Y_test, y_final, name, key)
     y.append(y_final)
     y_names.append("Decision Tree")
 
     Y_pred, y_final = rf(X_train, X_test, Y_train, Y_test, x_final)
-    print_stats("Random Forests", Y_pred, Y_test, y_final, name)
+    print_stats("Random Forests", Y_pred, Y_test, y_final, name, key)
     y.append(y_final)
     y_names.append("Random Forests")
 
     Y_pred, y_final = svm(X_train, X_test, Y_train, Y_test, x_final)
-    print_stats("SVM", Y_pred, Y_test, y_final, name)
+    print_stats("SVM", Y_pred, Y_test, y_final, name, key)
     y.append(y_final)
     y_names.append("SVM")
 

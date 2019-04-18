@@ -1,12 +1,15 @@
 from sklearn.metrics import confusion_matrix, accuracy_score
 import csv
+from plot import plot_confusion_matrix
 
 
-def print_stats(name, Y_pred, Y_test, y_final, initName):
+def print_stats(name, Y_pred, Y_test, y_final, initName, key):
     # Stats when running through the results
     print(name)
     print("Confusion Matrix: ")
-    print(confusion_matrix(Y_test, Y_pred))
+    cm = confusion_matrix(Y_test, Y_pred)
+    print(cm)
+    plot_confusion_matrix(cm, name, initName, key)
     print('Accuracy Score: %.2f' % accuracy_score(Y_test, Y_pred))
     print()
 

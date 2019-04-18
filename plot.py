@@ -126,3 +126,41 @@ def plot_importance(importance, name):
     plt.ylabel("Importance")
     plt.title("Plot of Feature Importance for " + name)
     plt.savefig("plots/FeatureImportance" + name + ".png" )
+
+def plot_confusion_matrix(cm, algo, name, key):
+    # Confusion Matrix plotting adapted from
+    # https://scikit-learn.org/stable/auto_examples/model_selection/plot_confusion_matrix.html
+    classes = []
+    for i in range(0, len(key.values())):
+        classes.append(key[i])
+
+    cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+
+    cmap = plt.cm.Blues
+
+    fig, ax = plt.subplots()
+    im = ax.imshow(cm, interpolation='nearest', cmap=cmap)
+    ax.figure.colorbar(im, ax=ax)
+
+    ax.set(xticks=np.arange(cm.shape[1]),
+           yticks=np.arange(cm.shape[0]),
+           xticklabels=classes, yticklabels=classes,
+           title=("confusion_matrix_" + algo + " " + name),
+           ylabel='True label',
+           xlabel='Predicted label')
+
+    plt.setp(ax.get_xticklabels(), rotation=45, ha="right",
+             rotation_mode="anchor")
+
+    fmt = '.2f'
+    thresh = cm.max() / 2.
+    for i in range(cm.shape[0]):
+        for j in range(cm.shape[1]):
+            ax.text(j, i, format(cm[i, j], fmt),
+                    ha="center", va="center",
+                    color="white" if cm[i, j] > thresh else "black")
+    fig.tight_layout()
+
+    fname = "plots/confusion_matrix_" + algo.replace(" ","") + "_" + name
+    fname.replace(" ","")
+    fig.savefig(fname)
