@@ -118,3 +118,11 @@ def plot_100(accuracy, iterations, name):
     plt.title("Accuracy across iterations for " + name)
     plt.savefig("plots/AccuracyComparison" + name + ".png")
     plt.close()
+
+def plot_importance(importance, name):
+    x = range(1,769)
+    plt.bar(x,importance, color='b')
+    plt.xlabel("Feature Number")
+    plt.ylabel("Importance")
+    plt.title("Plot of Feature Importance for " + name)
+    plt.savefig("plots/FeatureImportance" + name + ".png" )

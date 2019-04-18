@@ -8,7 +8,6 @@ import numpy as np
 import argparse
 from sklearn.ensemble import ExtraTreesClassifier
 from sklearn.feature_selection import SelectFromModel
-import json
 import ast
 
 def prepare(df):
@@ -32,8 +31,11 @@ def read_data(name):
     prepare(y_df)
     prepare(x_to_classify)
 
+
     clf = ExtraTreesClassifier(n_estimators=50)
     clf = clf.fit(x_df, y_df.values.ravel())
+    if not iteration:
+        plot_importance(clf.feature_importances_, name)
     model = SelectFromModel(clf, prefit=True)
     x_new = model.transform(x_df)
     x_to_classify_new = model.transform(x_to_classify)
@@ -53,7 +55,6 @@ def split(X, Y, x_to_classify, name, call_plot, key):
     # 70/30 split for training and testing data,
     X_train, X_test, Y_train, Y_test = train_test_split(X, Y, random_state=42,
                                                         test_size=0.3, stratify=Y)
-
 
     # Visualise the Training Data On all features, not on some features
     if call_plot:
