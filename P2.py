@@ -147,5 +147,5 @@ if __name__ == "__main__":
     else:
         iteration = False
         print("Normal usage")
-    read_data("binary")
-    read_data("multiclass")
+    read_data("binaryTask")
+    read_data("multiClassTask")
