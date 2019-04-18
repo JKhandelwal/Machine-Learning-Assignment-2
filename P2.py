@@ -55,7 +55,7 @@ def split(X, Y, x_to_classify, name, call_plot, key):
                                                         test_size=0.3, stratify=Y)
 
 
-    # Visualise the Training Data
+    # Visualise the Training Data On all features, not on some features
     if call_plot:
         plot(X_train, Y_train, name, key)
     models(X_train, X_test, Y_train, Y_test, x_to_classify, name)
@@ -93,7 +93,6 @@ def plot(X, Y, name, key):
     plotStdDev(df, name, key)
     plot_spearman(df, name)
     plot_fill_between(df, name, key)
-    plot_parallel_coordinates(df, name)
 
 
 def perform_iteration(X, Y, iterations, x_final, name):

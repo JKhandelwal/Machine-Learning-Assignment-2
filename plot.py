@@ -69,15 +69,6 @@ def plot_fill_between(X, name, key):
     plt.savefig("plots/fillBetween" + str(name) + ".png")
     plt.close()
 
-def plot_parallel_coordinates(df, name):
-
-    pc = pd.plotting.parallel_coordinates(df, 'Y', color=('#4286f4', '#f44141'), axvlines=False)
-
-    plt.xlabel("Feature Number")
-    plt.ylabel("Sample Number")
-    plt.title("Samples through features for Y for " + name)
-    plt.savefig("plots/parallel" + str(name) + ".png")
-    plt.close()
 
 def plot_p_value(Y, X_values, name):
     plt.scatter(range(1,769), [x[1] for x in Y.values()], marker="+")
