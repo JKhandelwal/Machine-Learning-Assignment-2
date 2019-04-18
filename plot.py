@@ -5,6 +5,7 @@ import numpy as np
 import pandas as pd
 
 def plotStdDev(X, name, key):
+    # Plot the fill between standard deviation
     list_unique = X.Y.unique()
 
     for i in list_unique:
@@ -38,6 +39,7 @@ def plotStdDev(X, name, key):
     plt.close()
 
 def plot_fill_between(X, name, key):
+    # Plot the fill between standard deviations
     list_unique = X.Y.unique()
 
     for i in list_unique:
@@ -71,6 +73,7 @@ def plot_fill_between(X, name, key):
 
 
 def plot_p_value(Y, X_values, name):
+    # Plot the P values
     plt.scatter(range(1,769), [x[1] for x in Y.values()], marker="+")
     plt.title("P_Value Coefficients for " + name)
     plt.xlabel("X Feature Number")
@@ -80,6 +83,7 @@ def plot_p_value(Y, X_values, name):
 
 
 def plot_spear(Y, X_values, name):
+    # Plot the spearman
     plt.scatter(range(1,769), [x[0] for x in Y.values()], marker="+")
     plt.title("Spearman Plot for " + name)
     plt.xlabel("X Feature Number")
@@ -88,6 +92,7 @@ def plot_spear(Y, X_values, name):
     plt.close()
 
 def plot_spearman(df, name):
+    # Plot for both Spearman coefficient and p value
     Y = df['Y']
     spe = {}
     for i in range(1,769):
@@ -99,6 +104,7 @@ def plot_spearman(df, name):
     plot_p_value(spe, X_values, name)
 
 def plot_100(accuracy, iterations, name):
+    # plot the accuracy results of 100 iterations
     x = range(1, iterations+1)
     logreg_accuracy = accuracy['logreg']
     rf_accuracy = accuracy['rf']
@@ -120,6 +126,7 @@ def plot_100(accuracy, iterations, name):
     plt.close()
 
 def plot_importance(importance, name):
+    # Plot feature importance
     x = range(1,769)
     plt.bar(x,importance, color='b')
     plt.xlabel("Feature Number")

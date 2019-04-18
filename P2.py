@@ -11,12 +11,14 @@ from sklearn.feature_selection import SelectFromModel
 import ast
 
 def prepare(df):
+    # Check for null values
     if df.isnull().values.any():
         print("There are Null values")
         df.dropna()
 
 
 def read_data(name):
+    # Function which read's csv's and runs them, both binary and multiclass
     print("-----------Runnning " + name + "-----------")
     # Cleaning the data, removing nulls if any, and converting all
     x_df = pd.read_csv(name + '/X.csv', header=None)
@@ -31,7 +33,7 @@ def read_data(name):
     prepare(y_df)
     prepare(x_to_classify)
 
-
+    # Feature selector run on all of the data
     clf = ExtraTreesClassifier(n_estimators=50)
     clf = clf.fit(x_df, y_df.values.ravel())
     if not iteration:
@@ -40,6 +42,7 @@ def read_data(name):
     x_new = model.transform(x_df)
     x_to_classify_new = model.transform(x_to_classify)
 
+    # Run some features vs all features
     print("Some Features Selected")
     split(x_new, y_df, x_to_classify_new, "subset_" + name , False, key)
 
@@ -48,6 +51,7 @@ def read_data(name):
 
 def split(X, Y, x_to_classify, name, call_plot, key):
 
+    # Iterations
     if iteration:
         perform_iteration(X, Y, 100, x_to_classify, name)
         return
@@ -62,7 +66,8 @@ def split(X, Y, x_to_classify, name, call_plot, key):
     models(X_train, X_test, Y_train, Y_test, x_to_classify, name, key)
 
 def models(X_train, X_test, Y_train, Y_test, x_final, name, key):
-    # Run the algorithms and print the result.
+    # Run the algorithms and at the end print the classification results to a
+    # file
     y = []
     y_names = []
     Y_pred, y_final = logreg(X_train, X_test, Y_train, Y_test, x_final)
@@ -132,6 +137,7 @@ def perform_iteration(X, Y, iterations, x_final, name):
 
 
 if __name__ == "__main__":
+    # Main function which runs both binary and multiclass
     parser = argparse.ArgumentParser()
     parser.add_argument("-i", "--iteration",action="store_true", help="Do 100 iterations")
     args = parser.parse_args()

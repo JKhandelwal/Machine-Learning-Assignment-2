@@ -7,7 +7,7 @@ import math
 
 def logreg(X_train, X_test, Y_train, Y_test, x_final):
     # Linear Regression
-    # lbfgs chosen to silence warnings
+    # lbfgs chosen as default parameter
     regr = LogisticRegression(solver="lbfgs", max_iter=200,multi_class="auto")
     regr.fit(X_train, Y_train.values.ravel())
     Y_pred = regr.predict(X_test)
