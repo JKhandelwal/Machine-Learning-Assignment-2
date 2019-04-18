@@ -16,12 +16,10 @@ def prepare(df):
         print("There are Null values")
         df.dropna()
 
-    df = df.astype('float64')
 
 def read_data(name):
     print("-----------Runnning " + name + "-----------")
     # Cleaning the data, removing nulls if any, and converting all
-    # values to floats for easy scalar transforms
     x_df = pd.read_csv(name + '/X.csv', header=None)
     y_df = pd.read_csv(name + '/y.csv', header=None)
     x_df.columns = ["X" + str(x) for x in range(1,len(x_df.columns) + 1)]
